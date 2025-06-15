@@ -46,7 +46,7 @@ class NoIPUpdater:
         options.add_argument("disable-features=VizDisplayCompositor")
         options.add_argument("headless")  # Run in headless mode
         options.add_argument("no-sandbox")  # Bypass OS security model
-        options.add_argument("window-size=1200x800")  # Set window size
+        options.add_argument("window-size=1920x1080")  # Set window size
         options.add_argument(f"user-agent={USER_AGENT}")  # Set user agent
         if self.https_proxy:
             options.add_argument("proxy-server=" + self.https_proxy)
