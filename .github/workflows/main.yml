@@ -1,0 +1,39 @@
+name: NO-IP Renew Task
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # chạy mỗi ngày lúc 3h sáng UTC
+  workflow_dispatch:      # cho phép chạy thủ công
+
+jobs:
+  renew-noip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🚀 Run NO-IP Renew script
+        env:
+          NOIP_USERNAME: ${{ secrets.NOIP_USERNAME }}
+          NOIP_PASSWORD: ${{ secrets.NOIP_PASSWORD }}
+          NOIP_TOTP_SECRET: ${{ secrets.NOIP_TOTP_SECRET }}
+        run: |
+          # Ensure the screenshots directory exists
+          mkdir -p ${{ github.workspace }}/screenshots
+          python noip-renew.py -u "$NOIP_USERNAME" -p "$NOIP_PASSWORD" -s "$NOIP_TOTP_SECRET" -d DEBUG
+
+      - name: 🚀 Upload Screenshots (if any)
+        if: always() # Always run this step, even if previous steps fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/screenshots
