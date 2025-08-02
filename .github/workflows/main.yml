@@ -2,7 +2,7 @@ name: NO-IP Renew Task
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # chạy mỗi ngày lúc 3h sáng UTC
+    - cron: '0 17 * * 0'  # chạy mỗi ngày lúc 3h sáng UTC
   workflow_dispatch:      # cho phép chạy thủ công
 
 jobs:
